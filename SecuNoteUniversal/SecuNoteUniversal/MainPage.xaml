@@ -7,7 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <RelativePanel Margin="0,0,0,10" d:LayoutOverrides="HorizontalAlignment">
+        <TextBlock x:Name="txtBlockHeader" Text="SecuNote" FontSize="48" FontWeight="Bold" />
+        <RelativePanel RelativePanel.Below="txtBlockHeader">
+                    <PasswordBox x:Name="passwordBox" HorizontalAlignment="Left" Height="76" VerticalAlignment="Top" Width="404" d:LayoutOverrides="HorizontalAlignment" RelativePanel.RightOf="textBlock"/>
+        <TextBlock x:Name="textBlock" Height="76" Margin="0,0,130,0" TextWrapping="Wrap" Text="Password:" VerticalAlignment="Top" FontSize="48"/>
+        <Button x:Name="button" Content="OK" HorizontalAlignment="Stretch" Margin="40,0,54,140" VerticalAlignment="Center" Click="button_Click" FontSize="48" d:LayoutOverrides="Width" RelativePanel.RightOf="passwordBox"/>
 
-    </Grid>
+        </RelativePanel>
+    </RelativePanel>
 </Page>

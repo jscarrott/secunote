@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="1f030172-f0c2-4515-bcc7-b57aa36a32bf"
+    Name="7b9613fa-64da-4548-aae7-e7a01780b4e9"
     Publisher="CN=johnp"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="1f030172-f0c2-4515-bcc7-b57aa36a32bf" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="7b9613fa-64da-4548-aae7-e7a01780b4e9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>SecuNoteUniversal</DisplayName>
