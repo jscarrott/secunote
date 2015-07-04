@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using SecuNoteUniversal.Models;
@@ -22,6 +23,13 @@ namespace SecuNoteUniversal.ViewModels
         {
             File = file;
             MruToken = StorageApplicationPermissions.FutureAccessList.Add(File);
+        }
+
+        public  FileItemViewModel(IStorageFile fileIn)
+        {
+            _file = fileIn;
+            Name = fileIn.Name;
+            IsEncrypted = false;
         }
 
         public IStorageFile File
@@ -78,7 +86,7 @@ namespace SecuNoteUniversal.ViewModels
                             existingItem.Name = fileItem.Name;
                             existingItem.IsEncrypted = fileItem.IsEncrypted;
                             existingItem.MruToken = fileItem.MruToken;
-                            existingItem.Nonce = fileItem.Nonce;
+                            existingItem.Nonce = CryptographicBuffer.EncodeToBase64String(fileItem.Nonce);
                             db.Update(existingItem);
                             result = "Existing Item detected - Item updated";
                         }
@@ -91,8 +99,8 @@ namespace SecuNoteUniversal.ViewModels
                                 Name = fileItem.Name,
                                 FileType = fileItem.Filetype.ToString(),
                                 MruToken = fileItem.MruToken,
-                                Nonce = fileItem.Nonce
-                            });
+                                Nonce = CryptographicBuffer.EncodeToBase64String(fileItem.Nonce)
+                        });
                             result = "Success - new item added to database.";
                         }
                     }
@@ -138,7 +146,8 @@ namespace SecuNoteUniversal.ViewModels
                     fileItemViewModelGotten.IsEncrypted = modelGotten.IsEncrypted;
                     fileItemViewModelGotten.MruToken = modelGotten.MruToken;
                     fileItemViewModelGotten.File = GetFileFromToken().Result;
-                    fileItemViewModelGotten.Nonce = modelGotten.Nonce;
+                    fileItemViewModelGotten.Nonce =
+                        CryptographicBuffer.DecodeFromBase64String(modelGotten.Nonce);
                 }
             }
             return fileItemViewModelGotten;

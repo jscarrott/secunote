@@ -1,10 +1,11 @@
 using System;
+using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using SQLite;
 
 namespace SecuNoteUniversal.Models
 {
-    internal abstract class AbstractItemModel
+    public abstract class AbstractItemModel
     {
         protected AbstractItemModel(int id, String name)
         {
@@ -22,6 +23,17 @@ namespace SecuNoteUniversal.Models
 
         public Boolean IsEncrypted { get; set; }
         public String Name { get; set; }
-        public IBuffer Nonce { get; set; }
+        public String Nonce { get; set; }
+
+
+        public void SetNonce(IBuffer nonce)
+        {
+            Nonce = CryptographicBuffer.EncodeToBase64String(nonce);
+        }
+
+        public IBuffer GetNonce()
+        {
+            return CryptographicBuffer.DecodeFromBase64String(Nonce);
+        }
     }
 }

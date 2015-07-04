@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 
 namespace SecuNoteUniversal.Models
@@ -15,6 +16,16 @@ namespace SecuNoteUniversal.Models
         }
 
         public String Content { get; set; }
-        public IBuffer AuthenticationTag { get; set; }
+        public String AuthenticationTag { get; set; }
+
+        public void SetAuthenticationTag(IBuffer tag)
+        {
+            AuthenticationTag = CryptographicBuffer.EncodeToBase64String(tag);
+        }
+
+        public IBuffer GetAuthenicationTag()
+        {
+            return CryptographicBuffer.DecodeFromBase64String(AuthenticationTag);
+        }
     }
 }

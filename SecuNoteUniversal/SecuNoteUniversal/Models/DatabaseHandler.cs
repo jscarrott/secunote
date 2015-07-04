@@ -9,6 +9,8 @@ namespace SecuNoteUniversal.Models
         private static string _databaseName = "Database.sqlite";
         public static string DBPath = string.Empty;
 
+        
+
         public static void SetupDatabase()
         {
             DBPath = Path.Combine(
@@ -16,7 +18,7 @@ namespace SecuNoteUniversal.Models
             using (SQLiteConnection _db = new SQLiteConnection(DBPath))
             {
                 // TODO: Remove this!!!!! For testing only!!!
-              //  _db.DropTable<FileItemModel>();
+                _db.DropTable<FileItemModel>();
                 // Create the tables if they don't exist
                 _db.CreateTable<FileItemModel>();
                 _db.CreateTable<StringItemModel>();

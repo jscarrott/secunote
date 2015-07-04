@@ -1,0 +1,24 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecuNoteUniversal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="using:SecuNoteUniversal.ViewModels"
+    x:Class="SecuNoteUniversal.MainItemPage"
+    mc:Ignorable="d" Loaded="Page_Loaded">
+
+    <RelativePanel Margin="0,0,0,10" d:LayoutOverrides="HorizontalAlignment" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="txtBlockHeader" Text="SecuNote" FontSize="48" FontWeight="Bold" />
+        <RelativePanel RelativePanel.Below="txtBlockHeader">
+            <ListBox x:Name="ItemsList">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </RelativePanel>
+    </RelativePanel>
+</Page>

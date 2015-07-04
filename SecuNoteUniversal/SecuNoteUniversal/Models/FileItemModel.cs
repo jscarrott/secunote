@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Storage;
 
 namespace SecuNoteUniversal.Models
 {
@@ -13,6 +14,13 @@ namespace SecuNoteUniversal.Models
 
         public FileItemModel()
         {
+        }
+
+        public FileItemModel(StorageFile fileIn)
+        {
+            IsEncrypted = false;
+            Name = fileIn.Name;
+            FileType = fileIn.FileType;
         }
 
         public String MruToken { get; set; }

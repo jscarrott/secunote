@@ -2,7 +2,7 @@
 
 namespace SecuNoteUniversal.ViewModels
 {
-    class ItemsViewModel : ViewModelBase
+    public class ItemsViewModel : ViewModelBase
     {
         private ObservableCollection<AbstractItemViewModel> _items;
 

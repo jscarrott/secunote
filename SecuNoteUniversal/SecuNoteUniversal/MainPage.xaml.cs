@@ -32,7 +32,7 @@ namespace SecuNoteUniversal
         {
             DatabaseHandler.SetupDatabase();
             //SQLite.SQLiteConnection
-
+            this.Frame.Navigate(typeof (MainItemPage));
         }
 
     }

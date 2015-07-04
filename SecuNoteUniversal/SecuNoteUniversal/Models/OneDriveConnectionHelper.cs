@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using OneDrive;
 
 namespace SecuNoteUniversal.Models
 {
-     class OneDriveConnectionHelper
+     static class OneDriveConnectionHelper
     {
         /// <summary>
         /// Login and create the connection, if necessary.
@@ -47,7 +48,7 @@ namespace SecuNoteUniversal.Models
         public static ODItem RootFiles { get; set; }
         public static ODItem AppFolder { get; set; }
 
-        public async Task SetAppFolder()
+        public static async Task SetAppFolder()
         {
 
             await GetRootFiles();
@@ -142,6 +143,13 @@ namespace SecuNoteUniversal.Models
             return
                 await
                     Connection.DeleteItemAsync(itemToDelete.ItemReference(), ItemDeleteOptions.Default);
+        }
+
+        public static List<ODItem> GetODItemsFromAppFolder()
+        {
+            EnsureConnection();
+            var itemsToReturn = AppFolder.Children.ToList();
+            return itemsToReturn;
         }
 
     }

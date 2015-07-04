@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using SecuNoteUniversal.Models;
 using SQLite;
@@ -69,8 +70,8 @@ namespace SecuNoteUniversal.ViewModels
                             existingItem.Name = stringItem.Name;
                             existingItem.IsEncrypted = stringItem.IsEncrypted;
                             existingItem.Content = stringItem.Content;
-                            existingItem.Nonce = stringItem.Nonce;
-                            existingItem.AuthenticationTag = stringItem.AuthenticationTag;
+                            existingItem.Nonce = CryptographicBuffer.EncodeToBase64String(stringItem.Nonce);
+                            existingItem.AuthenticationTag = CryptographicBuffer.EncodeToBase64String(stringItem.AuthenticationTag);
                             db.Update(existingItem);
                             result = "Existing Item detected - Item updated";
                         }
@@ -82,8 +83,8 @@ namespace SecuNoteUniversal.ViewModels
                                 Id = stringItem.ID,
                                 Name = stringItem.Name,
                                 Content = stringItem.Content,
-                                Nonce = stringItem.Nonce,
-                                AuthenticationTag = stringItem.AuthenticationTag
+                                Nonce = CryptographicBuffer.EncodeToBase64String(stringItem.Nonce),
+                                AuthenticationTag = CryptographicBuffer.EncodeToBase64String(stringItem.AuthenticationTag)
                             });
                             result = "Success - new item added to database.";
                         }
@@ -114,8 +115,8 @@ namespace SecuNoteUniversal.ViewModels
                     stringItemViewModelGotten.Name = modelGotten.Name;
                     stringItemViewModelGotten.IsEncrypted = modelGotten.IsEncrypted;
                     stringItemViewModelGotten.Content = modelGotten.Content;
-                    stringItemViewModelGotten.Nonce = modelGotten.Nonce;
-                    stringItemViewModelGotten.AuthenticationTag = modelGotten.AuthenticationTag;
+                    stringItemViewModelGotten.Nonce = CryptographicBuffer.DecodeFromBase64String(modelGotten.Nonce);
+                    stringItemViewModelGotten.AuthenticationTag = CryptographicBuffer.DecodeFromBase64String(modelGotten.AuthenticationTag);
                 }
                 else
                 {
