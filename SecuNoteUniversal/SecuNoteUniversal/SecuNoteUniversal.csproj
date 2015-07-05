@@ -91,6 +91,9 @@
     <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AddNewItemPage.xaml.cs">
+      <DependentUpon>AddNewItemPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,7 @@
     <Compile Include="StringItemObservableCollection.cs" />
     <Compile Include="ViewModels\AbstractItemViewModel.cs" />
     <Compile Include="ViewModels\Constants.cs" />
+    <Compile Include="ViewModels\DatabaseViewModel.cs" />
     <Compile Include="ViewModels\FileItemsViewModel.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
     <Compile Include="ViewModels\IItemData.cs" />
@@ -147,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AddNewItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainItemPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

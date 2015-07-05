@@ -1,6 +1,6 @@
 ﻿namespace SecuNoteUniversal.ViewModels
 {
-    internal class Constants
+    public class Constants
     {
         public enum DataType
         {

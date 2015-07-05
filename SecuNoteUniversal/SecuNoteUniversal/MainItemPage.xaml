@@ -18,6 +18,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <Button x:Name="AddNewItemButton" RelativePanel.Below="ItemsList" Content="Add New File" Click="AddNewItemButton_Click"></Button>
 
         </RelativePanel>
     </RelativePanel>

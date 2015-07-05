@@ -89,7 +89,8 @@ namespace SecuNoteUniversal
             }
             //await OneDriveConnectionHelper.Login();
             SynchronisationHandler.Initialise("FileItems");
-
+            DatabaseHandler.SetupDatabase();
+            DatabaseViewModel.Initialise();
 
             // Ensure the current window is active
             Window.Current.Activate();

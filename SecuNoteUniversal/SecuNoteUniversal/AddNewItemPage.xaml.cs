@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,29 +23,32 @@ namespace SecuNoteUniversal
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainItemPage : Page
+    public sealed partial class AddNewItemPage : Page
     {
-        public MainItemPage()
+
+        private StorageFile _filePicked = null;
+        public AddNewItemPage()
         {
             this.InitializeComponent();
         }
 
-        public ObservableCollection<AbstractItemModel> ItemModels { get; set; }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+
+        private async void SelectFileButton_Click(object sender, RoutedEventArgs e)
         {
-            ItemModels = new ObservableCollection<AbstractItemModel>();
-            var files = await  SynchronisationHandler.WorkingDirectory.GetFilesAsync();
-            foreach (var storageFile in files)
-            {
-                ItemModels.Add(new FileItemModel(storageFile));
-            }
-            ItemsList.ItemsSource = files;
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add("*");
+            _filePicked =  await picker.PickSingleFileAsync();
+
         }
 
-        private void AddNewItemButton_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof (AddNewItemPage));
+            if (_filePicked != null)
+            {
+                await SynchronisationHandler.AddTotalyNewFile(_filePicked);
+                this.Frame.Navigate(typeof (MainItemPage));
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using SecuNoteUniversal.Models;
@@ -99,19 +100,18 @@ namespace SecuNoteUniversal.ViewModels
             return "Failure Item not of correct class";
         }
 
-        public AbstractItemViewModel GetItem(int itemID) 
+        public async Task<AbstractItemViewModel> GetItem(string name) 
         {
             var stringItemViewModelGotten = new StringItemViewModel();
             using (var db = new SQLiteConnection(DatabaseHandler.DBPath))
             {
                 //StringItemModel modelGotten;
 
-                var modelGotten = (db.Table<StringItemModel>().Where(c => c.Id == itemID)).SingleOrDefault();
+                var modelGotten = (db.Table<StringItemModel>().Where(c => c.Name == name)).SingleOrDefault();
                 
                 
                 if (modelGotten != null)
                 {
-                    stringItemViewModelGotten.ID = itemID;
                     stringItemViewModelGotten.Name = modelGotten.Name;
                     stringItemViewModelGotten.IsEncrypted = modelGotten.IsEncrypted;
                     stringItemViewModelGotten.Content = modelGotten.Content;

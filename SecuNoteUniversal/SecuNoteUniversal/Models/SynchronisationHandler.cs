@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI.Popups;
 using OneDrive;
+using SecuNoteUniversal.ViewModels;
 
 namespace SecuNoteUniversal.Models
 {
@@ -115,6 +117,39 @@ namespace SecuNoteUniversal.Models
                         await workingDirFile.Value.OpenStreamForReadAsync());
                 }
             }
+        }
+
+        public static async Task AddTotalyNewFile(StorageFile fileIn)
+        {
+            try
+            {
+                var newFile = await WorkingDirectory.CreateFileAsync(fileIn.Name, CreationCollisionOption.FailIfExists);
+                var fileItem = new FileItemViewModel(newFile);
+                await fileIn.CopyAndReplaceAsync(newFile);
+                fileItem.SaveItem(fileItem);
+            }
+            catch (Exception)
+            {
+                var warning =
+                    new MessageDialog(
+                        "Warning the file already exists in the main app directory, do you wish to overwrite it?")
+                    {
+                        Title = "Warning!"
+                    };
+                warning.Commands.Add(new UICommand {Label = "Ok", Id = 0} );
+                warning.Commands.Add(new UICommand { Label = "No", Id = 1});
+                var res = await warning.ShowAsync();
+                if ((int) res.Id == 0)
+                {
+                    var newFile = await WorkingDirectory.CreateFileAsync(fileIn.Name, CreationCollisionOption.ReplaceExisting);
+                    await fileIn.CopyAndReplaceAsync(newFile);
+                 var fileItem = new FileItemViewModel(newFile);
+                    fileItem.SaveItem(fileItem);
+                }
+                
+            }
+            
+
         }
     }
 }

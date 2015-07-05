@@ -9,7 +9,7 @@ using SQLite;
 
 namespace SecuNoteUniversal.ViewModels
 {
-    internal class FileItemViewModel : AbstractItemViewModel, IItemData
+    public class FileItemViewModel : AbstractItemViewModel, IItemData
     {
         private IStorageFile _file;
         private Constants.Filetype _fileType;
@@ -133,19 +133,19 @@ namespace SecuNoteUniversal.ViewModels
             return result;
         }
 
-        public AbstractItemViewModel GetItem(int id)
+        public async Task<AbstractItemViewModel> GetItem(string name)
         {
             var fileItemViewModelGotten = new FileItemViewModel();
             using (var db = new SQLiteConnection(DatabaseHandler.DBPath))
             {
-                var modelGotten = (db.Table<FileItemModel>().Where(c => c.Id == id)).Single();
+                var modelGotten = (db.Table<FileItemModel>().Where(c => c.Name == name)).Single();
                 if (modelGotten != null)
                 {
-                    fileItemViewModelGotten.ID = id;
+                    fileItemViewModelGotten.ID = modelGotten.Id;
                     fileItemViewModelGotten.Name = modelGotten.Name;
                     fileItemViewModelGotten.IsEncrypted = modelGotten.IsEncrypted;
                     fileItemViewModelGotten.MruToken = modelGotten.MruToken;
-                    fileItemViewModelGotten.File = GetFileFromToken().Result;
+                    fileItemViewModelGotten.File = await SynchronisationHandler.WorkingDirectory.GetFileAsync(name);
                     fileItemViewModelGotten.Nonce =
                         CryptographicBuffer.DecodeFromBase64String(modelGotten.Nonce);
                 }
