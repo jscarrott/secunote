@@ -15,9 +15,9 @@ namespace SecuNoteUniversal.Models
     {
         private CryptographicKey aesKey;
 
-        public Encryptor(string password)
+        public async Task Initialise(string password)
         {
-            CreateAesKey(password);
+            await CreateAesKey(password);
         }
 
         //String strMsg = "1234567812345678";     // Data to encrypt.
@@ -35,10 +35,13 @@ namespace SecuNoteUniversal.Models
                 CreateNonce(fileToEncrypt);
                 EncryptedAndAuthenticatedData encryptedData = CryptographicEngine.EncryptAndAuthenticate(aesKey, fileBuffer, fileToEncrypt.Nonce,
                     null);
-                XmlSerializer serializer = new XmlSerializer(typeof(EncryptedAndAuthenticatedData));
+                
+                var serialData = new SerialisableAuthData(encryptedData.AuthenticationTag, encryptedData.EncryptedData);
+                
+                XmlSerializer serializer = new XmlSerializer(typeof(SerialisableAuthData));
                 using (Stream stream = await fileToEncrypt.File.OpenStreamForWriteAsync())
                 {
-                    serializer.Serialize(stream, encryptedData);
+                    serializer.Serialize(stream, serialData);
                     await stream.FlushAsync();
                     stream.Dispose();
                 }
@@ -119,11 +122,12 @@ namespace SecuNoteUniversal.Models
         ///     TODO remove magic numbers
         /// </summary>
         /// <param name="password"></param>
-        public async void CreateAesKey(string password)
+        public async Task CreateAesKey(string password)
         {
             var hashProvider = KeyDerivationAlgorithmProvider.OpenAlgorithm(KeyDerivationAlgorithmNames.Pbkdf2Sha512);
             var passwordBuffer = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
             var salt = await GetSalt();
+            //var salt = await GenerateAndSaveSalt();
 
             var keyCreationParameters = KeyDerivationParameters.BuildForPbkdf2(salt, 1000);
 
@@ -140,18 +144,33 @@ namespace SecuNoteUniversal.Models
         {
             var salt = CryptographicBuffer.GenerateRandom(32);
             var saltFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync("salt");
-            await
-                FileIO.WriteTextAsync(saltFile,
-                    CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, salt), UnicodeEncoding.Utf8);
+            try
+            {
+                await
+                    FileIO.WriteBufferAsync(saltFile, salt);
+            }
+            catch (Exception)
+            {
+                
+                
+            }
+            
             return salt;
         }
 
         private async Task<IBuffer> GetSalt()
         {
-            var saltFile = await ApplicationData.Current.RoamingFolder.GetFileAsync("salt");
-            if (saltFile == null) return await GenerateAndSaveSalt();
-            var stringSalt = await FileIO.ReadTextAsync(saltFile);
-            return CryptographicBuffer.ConvertStringToBinary(stringSalt, BinaryStringEncoding.Utf8);
+            StorageFile saltFile;
+            
+               saltFile = await ApplicationData.Current.RoamingFolder.GetFileAsync("salt");
+            if (saltFile == null)
+            {
+                GenerateAndSaveSalt();
+            }
+                var stringSalt = await FileIO.ReadBufferAsync(saltFile);
+
+
+            return stringSalt;
         }
     }
 }

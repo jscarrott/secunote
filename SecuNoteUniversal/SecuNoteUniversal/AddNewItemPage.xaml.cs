@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SecuNoteUniversal.Models;
+using SecuNoteUniversal.ViewModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -47,6 +48,7 @@ namespace SecuNoteUniversal
             if (_filePicked != null)
             {
                 await SynchronisationHandler.AddTotalyNewFile(_filePicked);
+                DatabaseViewModel.UpdateAllDatabaseEntries();
                 this.Frame.Navigate(typeof (MainItemPage));
             }
         }

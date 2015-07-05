@@ -19,6 +19,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <Button x:Name="AddNewItemButton" RelativePanel.Below="ItemsList" Content="Add New File" Click="AddNewItemButton_Click"></Button>
+            <Button x:Name="EncryptFilesButton" RelativePanel.Below="ItemsList" RelativePanel.RightOf="AddNewItemButton" Content="Encrypt" Click="EncryptFilesButton_Click"></Button>
 
         </RelativePanel>
     </RelativePanel>

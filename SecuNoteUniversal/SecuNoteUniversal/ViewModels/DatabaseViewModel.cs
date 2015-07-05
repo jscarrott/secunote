@@ -13,7 +13,7 @@ namespace SecuNoteUniversal.ViewModels
     {
         public static ObservableCollection<AbstractItemViewModel> ItemViewModels { get; set; }
 
-        public static async void Initialise()
+        public static async Task Initialise()
         {
             ItemViewModels = new ObservableCollection<AbstractItemViewModel>();
             using (SQLiteConnection _db = new SQLiteConnection(DatabaseHandler.DBPath))
@@ -25,6 +25,8 @@ namespace SecuNoteUniversal.ViewModels
                 {
                     var item = await new FileItemViewModel().GetItem(fileItemModel.Name);
                     listFileViewModel.Add(item as FileItemViewModel);
+                    //var itemvm = (FileItemViewModel) item;
+                    //itemvm.SaveItem(itemvm);
                 }
                 List<AbstractItemViewModel> allList = new List<AbstractItemViewModel>();
                 allList.AddRange(listFileViewModel);

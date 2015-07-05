@@ -112,6 +112,7 @@
     <Compile Include="Models\LiveIdAuth.cs" />
     <Compile Include="Models\OneDriveConnectionHelper.cs" />
     <Compile Include="Models\OneDriveSdkAuthenticationInfo.cs" />
+    <Compile Include="Models\SerialisableAuthData.cs" />
     <Compile Include="Models\StringItemModel.cs" />
     <Compile Include="Models\SynchronisationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using SecuNoteUniversal.Models;
+using SecuNoteUniversal.ViewModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,22 +31,35 @@ namespace SecuNoteUniversal
             this.InitializeComponent();
         }
 
-        public ObservableCollection<AbstractItemModel> ItemModels { get; set; }
+        public ObservableCollection<AbstractItemViewModel> ItemModels { get; set; }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemModels = new ObservableCollection<AbstractItemModel>();
-            var files = await  SynchronisationHandler.WorkingDirectory.GetFilesAsync();
-            foreach (var storageFile in files)
-            {
-                ItemModels.Add(new FileItemModel(storageFile));
-            }
-            ItemsList.ItemsSource = files;
+            await DatabaseViewModel.Initialise();
+            ItemModels = DatabaseViewModel.ItemViewModels;
+            ItemsList.ItemsSource = ItemModels;
         }
 
         private void AddNewItemButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof (AddNewItemPage));
         }
+
+        private async void EncryptFilesButton_Click(object sender, RoutedEventArgs e)
+        {
+            var encryptor = new Encryptor();
+            await encryptor.Initialise("12345");
+            foreach (var abstractItemModel in ItemModels.Where(abstractItemModel => abstractItemModel.GetType() == typeof(FileItemViewModel)))
+            {
+                await encryptor.EncryptFileAes(abstractItemModel as FileItemViewModel);
+            }
+        }
+
+        //private void Page_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    DatabaseViewModel.Initialise();
+        //    ItemModels = DatabaseViewModel.ItemViewModels;
+        //    ItemsList.ItemsSource = ItemModels;
+        //}
     }
 }
