@@ -31,13 +31,17 @@ namespace SecuNoteUniversal
             this.InitializeComponent();
         }
 
-        public ObservableCollection<AbstractItemViewModel> ItemModels { get; set; }
+        private Encryptor encryptor;
+
+        public static ObservableCollection<AbstractItemViewModel> ItemModels { get; set; }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await DatabaseViewModel.Initialise();
+            //await DatabaseViewModel.Initialise();
             ItemModels = DatabaseViewModel.ItemViewModels;
             ItemsList.ItemsSource = ItemModels;
+            encryptor = new Encryptor();
+            await encryptor.Initialise("12345");
         }
 
         private void AddNewItemButton_Click(object sender, RoutedEventArgs e)
@@ -47,19 +51,33 @@ namespace SecuNoteUniversal
 
         private async void EncryptFilesButton_Click(object sender, RoutedEventArgs e)
         {
-            var encryptor = new Encryptor();
-            await encryptor.Initialise("12345");
+            
             foreach (var abstractItemModel in ItemModels.Where(abstractItemModel => abstractItemModel.GetType() == typeof(FileItemViewModel)))
             {
                 await encryptor.EncryptFileAes(abstractItemModel as FileItemViewModel);
             }
         }
 
-        //private void Page_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    DatabaseViewModel.Initialise();
-        //    ItemModels = DatabaseViewModel.ItemViewModels;
-        //    ItemsList.ItemsSource = ItemModels;
-        //}
+        private async void DecryptFilesButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var abstractItemModel in ItemModels.Where(abstractItemModel => abstractItemModel.GetType() == typeof(FileItemViewModel)))
+            {
+                await encryptor.DecryptFileAes(abstractItemModel as FileItemViewModel);
+            }
+        }
+
+        private async void Page_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //await DatabaseViewModel.Initialise();
+            //ItemModels = DatabaseViewModel.ItemViewModels;
+            //ItemsList.ItemsSource = ItemModels;
+        }
+
+        private async void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            await DatabaseViewModel.Initialise();
+            ItemModels = DatabaseViewModel.ItemViewModels;
+            ItemsList.ItemsSource = ItemModels;
+        }
     }
 }

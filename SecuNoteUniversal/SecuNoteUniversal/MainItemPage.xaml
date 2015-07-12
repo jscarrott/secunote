@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ViewModels="using:SecuNoteUniversal.ViewModels"
     x:Class="SecuNoteUniversal.MainItemPage"
-    mc:Ignorable="d" Loaded="Page_Loaded">
+    mc:Ignorable="d" Loaded="Page_Loaded" GotFocus="Page_GotFocus">
 
     <RelativePanel Margin="0,0,0,10" d:LayoutOverrides="HorizontalAlignment" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="txtBlockHeader" Text="SecuNote" FontSize="48" FontWeight="Bold" />
@@ -20,6 +20,8 @@
             </ListBox>
             <Button x:Name="AddNewItemButton" RelativePanel.Below="ItemsList" Content="Add New File" Click="AddNewItemButton_Click"></Button>
             <Button x:Name="EncryptFilesButton" RelativePanel.Below="ItemsList" RelativePanel.RightOf="AddNewItemButton" Content="Encrypt" Click="EncryptFilesButton_Click"></Button>
+            <Button x:Name="DecryptFilesButton" RelativePanel.RightOf="EncryptFilesButton" RelativePanel.Below="ItemsList" Content="Decrypt" Click="DecryptFilesButton_Click"></Button>
+            <Button x:Name="UpdateButton" RelativePanel.Below="AddNewItemButton" Content="Refresh" Click="UpdateButton_Click"></Button>
 
         </RelativePanel>
     </RelativePanel>

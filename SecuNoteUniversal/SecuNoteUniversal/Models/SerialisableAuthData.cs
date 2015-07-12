@@ -24,6 +24,7 @@ namespace SecuNoteUniversal.Models
             TagBuffer = tagI;
             byte[] tagD;
             CryptographicBuffer.CopyToByteArray(data, out tagD);
+            DataBuffer = tagD;
         }
 
         public SerialisableAuthData()

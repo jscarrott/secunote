@@ -47,8 +47,9 @@ namespace SecuNoteUniversal
         {
             if (_filePicked != null)
             {
-                await SynchronisationHandler.AddTotalyNewFile(_filePicked);
-                DatabaseViewModel.UpdateAllDatabaseEntries();
+                var item = await SynchronisationHandler.AddTotalyNewFile(_filePicked);
+                //DatabaseViewModel.UpdateAllDatabaseEntries();
+                DatabaseViewModel.ItemViewModels.Add(item);
                 this.Frame.Navigate(typeof (MainItemPage));
             }
         }

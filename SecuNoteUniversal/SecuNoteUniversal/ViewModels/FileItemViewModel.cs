@@ -78,7 +78,7 @@ namespace SecuNoteUniversal.ViewModels
                     string result;
                     try
                     {
-                        var existingItem = (db.Table<FileItemModel>().Where(c => c.Id == fileItem.ID)).SingleOrDefault();
+                        var existingItem = (db.Table<FileItemModel>().Where(c => c.Name == fileItem.Name)).SingleOrDefault();
 
                         if (existingItem != null)
                         {
@@ -104,7 +104,7 @@ namespace SecuNoteUniversal.ViewModels
                             result = "Success - new item added to database.";
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         result = "Failure - Item not saved";
                     }
@@ -119,7 +119,7 @@ namespace SecuNoteUniversal.ViewModels
             var result = String.Empty;
             using (var db = new SQLiteConnection(DatabaseHandler.DBPath))
             {
-                var modelGotten = (db.Table<FileItemModel>().Where(c => c.Id == id)).Single();
+                var modelGotten = (db.Table<FileItemModel>().Where(c => c.Name == Name)).Single();
                 if (modelGotten != null)
                 {
                     db.Delete(modelGotten);

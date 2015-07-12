@@ -119,7 +119,7 @@ namespace SecuNoteUniversal.Models
             }
         }
 
-        public static async Task AddTotalyNewFile(StorageFile fileIn)
+        public static async Task<FileItemViewModel> AddTotalyNewFile(StorageFile fileIn)
         {
             try
             {
@@ -127,6 +127,7 @@ namespace SecuNoteUniversal.Models
                 var fileItem = new FileItemViewModel(newFile);
                 await fileIn.CopyAndReplaceAsync(newFile);
                 fileItem.SaveItem(fileItem);
+                return fileItem;
             }
             catch (Exception)
             {
@@ -145,10 +146,13 @@ namespace SecuNoteUniversal.Models
                     await fileIn.CopyAndReplaceAsync(newFile);
                  var fileItem = new FileItemViewModel(newFile);
                     fileItem.SaveItem(fileItem);
+                    return fileItem;
                 }
                 
             }
-            
+
+            return null;
+
 
         }
     }

@@ -41,8 +41,9 @@ namespace SecuNoteUniversal.ViewModels
             }
         }
 
-        public static void UpdateAllDatabaseEntries()
+        public async static void UpdateAllDatabaseEntries()
         {
+            await Initialise();
             foreach (var item in ItemViewModels.OfType<FileItemViewModel>().Select(abstractItemViewModel => abstractItemViewModel as FileItemViewModel))
             {
                 item.SaveItem(item);

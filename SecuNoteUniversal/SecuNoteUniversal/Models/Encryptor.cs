@@ -41,8 +41,10 @@ namespace SecuNoteUniversal.Models
                 XmlSerializer serializer = new XmlSerializer(typeof(SerialisableAuthData));
                 using (Stream stream = await fileToEncrypt.File.OpenStreamForWriteAsync())
                 {
-                    serializer.Serialize(stream, serialData);
+                    TextWriter output = new StreamWriter(stream);
+                    serializer.Serialize(output, serialData);
                     await stream.FlushAsync();
+                    output.Dispose();
                     stream.Dispose();
                 }
                 fileToEncrypt.IsEncrypted = true;
@@ -58,17 +60,21 @@ namespace SecuNoteUniversal.Models
         {
             if (fileToDecrypt.IsEncrypted)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(EncryptedAndAuthenticatedData));
-                EncryptedAndAuthenticatedData encryptedData = null;
+                XmlSerializer serializer = new XmlSerializer(typeof(SerialisableAuthData));
+                SerialisableAuthData tagData = null;
                 using (Stream stream = await fileToDecrypt.File.OpenStreamForReadAsync())
                 {
-                    encryptedData = serializer.Deserialize(stream) as EncryptedAndAuthenticatedData;
+                    tagData = serializer.Deserialize(stream) as SerialisableAuthData;
                     stream.Dispose();
                 }
-                Debug.Assert(encryptedData != null, "encryptedData != null");
-                var decryptedData = CryptographicEngine.DecryptAndAuthenticate(aesKey, encryptedData.EncryptedData,
-                    fileToDecrypt.Nonce, encryptedData.AuthenticationTag, null);
-                await FileIO.WriteBufferAsync(fileToDecrypt.File, decryptedData);
+                if (tagData != null)
+                {
+                    IBuffer data = tagData.GetData();
+                    IBuffer tag = tagData.GetTag();
+                    var decryptedData = CryptographicEngine.DecryptAndAuthenticate(aesKey, data,
+                        fileToDecrypt.Nonce, tag, null);
+                    await FileIO.WriteBufferAsync(fileToDecrypt.File, decryptedData);
+                }
                 fileToDecrypt.IsEncrypted = false;
 
             }

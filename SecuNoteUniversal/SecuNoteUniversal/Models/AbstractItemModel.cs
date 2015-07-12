@@ -18,7 +18,7 @@ namespace SecuNoteUniversal.Models
         {
         }
 
-        [PrimaryKey]
+        //[PrimaryKey]
         public int Id { get; set; }
 
         public Boolean IsEncrypted { get; set; }
