@@ -1,0 +1,36 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecuNoteUniversal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModels="using:SecuNoteUniversal10.ViewModels"
+    x:Class="SecuNoteUniversal10.MainItemPage"
+    mc:Ignorable="d" Loaded="Page_Loaded" GotFocus="Page_GotFocus">
+
+    <RelativePanel Margin="0,0,0,10" d:LayoutOverrides="HorizontalAlignment"
+                   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="txtBlockHeader" Text="SecuNote" FontSize="48" FontWeight="Bold" />
+        <RelativePanel RelativePanel.Below="txtBlockHeader">
+            <ListBox x:Name="ItemsList">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock VerticalAlignment="Center" TextAlignment="Center" Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Button x:Name="AddNewItemButton" RelativePanel.Below="ItemsList" Content="Add New File"
+                    Click="AddNewItemButton_Click" />
+            <Button x:Name="EncryptFilesButton" RelativePanel.Below="ItemsList"
+                    RelativePanel.RightOf="AddNewItemButton" Content="Encrypt" Click="EncryptFilesButton_Click" />
+            <Button x:Name="DecryptFilesButton" RelativePanel.RightOf="EncryptFilesButton"
+                    RelativePanel.Below="ItemsList" Content="Decrypt" Click="DecryptFilesButton_Click" />
+            <Button x:Name="UpdateButton" RelativePanel.Below="AddNewItemButton" Content="Refresh"
+                    Click="UpdateButton_Click" />
+            <Button x:Name="ViewButton" RelativePanel.RightOf="UpdateButton" RelativePanel.Below="AddNewItemButton"
+                    Content="View" Click="ViewButton_Click" />
+
+
+        </RelativePanel>
+    </RelativePanel>
+</Page>
